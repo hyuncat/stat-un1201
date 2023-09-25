@@ -9,6 +9,9 @@ def mean(arr=[]):
         n += 1
     return total/n
 
+#def median(arr=[]):
+    
+
 def sample_variance(arr = []):
     sample_mean = mean(arr)
     sum, n = 0, 0
@@ -38,13 +41,26 @@ def create_arr_from_str(arr_str: str):
     return arr
 
 if __name__ == "__main__":
-    arr_str = input("Enter array of numbers: ")
-    arr = create_arr_from_str(arr_str)
     
-    print(f"Mean of entered array is: {mean(arr)}")
-    print(f"Sample variance of entered array is: {sample_variance(arr)}")
-    print(f"Standard deviation of entered array is: {standard_deviation(sample_variance(arr))}")
+    arr_list = []
+    valid = True
 
-    plt.boxplot(arr)
+    while valid == True:
+        arr_str = input("Enter array of numbers: ")
+        arr = create_arr_from_str(arr_str)
+
+        print(f"Mean of entered array is: {mean(arr)}")
+        print(f"Sample variance of entered array is: {sample_variance(arr)}")
+        print(f"Standard deviation of entered array is: {standard_deviation(sample_variance(arr))}")
+        
+        arr_list.append(arr)
+
+        tmp = input("Enter another array? (y/n) ")
+        if tmp == "y" or tmp == "Y":
+            valid = True
+        else:
+            valid = False
+
+    plt.boxplot(arr_list)
     plt.show()
     
