@@ -3,23 +3,60 @@ import matplotlib.pyplot as plt
 import numpy as np
 from quicksort import *
 
-def mean(arr=[]):
+def mean(arr):
     total, n = 0, 0
     for i in range(0, len(arr)):
         total += arr[i]
         n += 1
     return total/n
 
-#def median(arr=[]):
-    # add later...
+def median(arr):
+    quickSort(arr, 0, len(arr)-1)
+    if len(arr)%2 == 1:
+        return arr[len(arr)//2]
+    else:
+        return (arr[len(arr)//2] + arr[(len(arr)//2)+1])/2
+    
+def fiveNumberSummary(arr):
+    quickSort(arr, 0, len(arr)-1)
 
-def sample_variance(arr = []):
+    min, max = arr[0], arr[len(arr)-1]
+    q1, med, q3 = 0, 0, 0
+    
+    if len(arr)%2 == 1:
+        q1 = arr[len(arr)//4]
+        med = arr[len(arr)//2]
+        q3 = arr[(3*len(arr)//4)]
+    else:
+        q1 = (arr[len(arr)//4] + arr[(len(arr)//4)+1])/2
+        med = (arr[len(arr)//2] + arr[(len(arr)//2)+1])/2
+        q3 = (arr[(3*len(arr))//4] + arr[(3*(len(arr))//4)+1])/2
+    
+    return [("Min", min), ("Q1", q1), ("Med", med), ("Q3", q3), ("Max", max)]
+
+def printFiveNSumm(data):
+    for label, value in data:
+        print(f"{label}: {value}")
+    
+def sample_variance(arr):
     sample_mean = mean(arr)
     sum, n = 0, 0
     for i in range(0, len(arr)):
         sum = sum + (arr[i] - sample_mean)**2
         n += 1
     return sum / (n-1)
+
+def alt_sample_variance(arr):
+    sum1, sum2, n = 0, 0, 0
+    # first part S(x.i)^2
+    for i in range(0, len(arr)):
+        sum1 = sum1 + arr[i]**2
+        n += 1
+    # second part (S(x.i))^2
+    for i in range(0, len(arr)):
+        sum2 = sum2 + arr[i]
+    sum2 = (sum2**2)/n
+    return (sum1 - sum2)/(n-1)
 
 def standard_deviation(sample_variance):
     return math.sqrt(sample_variance)
@@ -53,13 +90,18 @@ if __name__ == "__main__":
         arr_str = input("Enter array of numbers: ")
         arr = create_arr_from_str(arr_str)
 
-        print(f"Mean of entered array is: {mean(arr)}")
-        print(f"Sample variance of entered array is: {sample_variance(arr)}")
-        print(f"Standard deviation of entered array is: {standard_deviation(sample_variance(arr))}")
+        print(f".\n.\nMean: {mean(arr)}")
+        print(f"Median: {median(arr)}")
+        print("Five number summary:")
+        for label, value in fiveNumberSummary(arr):
+            print(f" - {label}: {value}")
+        print(f"Sample variance: {sample_variance(arr)}")
+        print(f"Sample variance (alt. formula): {alt_sample_variance(arr)}")
+        print(f"Standard deviation: {standard_deviation(sample_variance(arr))}")
 
         arr_list.append(arr)
 
-        tmp = input("Enter another array? (y/n) ")
+        tmp = input(f".\n.\nEnter another array? (y/n) ")
 
         if tmp == "y" or tmp == "Y":
             valid = True
